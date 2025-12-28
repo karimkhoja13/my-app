@@ -1,5 +1,4 @@
 import type { Task } from '../components/TaskItem';
-import { TaskList } from './TaskList';
 
 interface Project {
   name: string;

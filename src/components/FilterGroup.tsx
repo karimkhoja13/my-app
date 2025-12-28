@@ -1,8 +1,8 @@
 import { type FilterValues } from '../pages/TaskList';
 
 interface FilterGroupProps {
+    selectedFilter: FilterValues;
   onFilter: (filterName: FilterValues) => void;
-  selectedFilter: FilterValues;
 }
 
 export function FilterGroup({ selectedFilter, onFilter }: FilterGroupProps) {

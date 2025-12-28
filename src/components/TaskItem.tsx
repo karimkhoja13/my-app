@@ -4,15 +4,17 @@ export interface Task {
   project: string;
 }
 
+interface TaskItemProps {
+  task: Task;
+  onToggle: () => void;
+  onDelete: () => void;
+}
+
 export function TaskItem({
   task,
   onToggle,
   onDelete,
-}: {
-  task: Task;
-  onToggle: () => void;
-  onDelete: () => void;
-}) {
+}: TaskItemProps) {
   return (
     <li
       style={{ color: task.completedStatus ? 'black' : 'red' }}
