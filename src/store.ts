@@ -8,13 +8,11 @@ type Task = {
 };
 
 type State = {
-  firstName: string;
   tasks: Task[];
 };
 
 // 3. Define the Actions (functions)
 type Action = {
-  updateFirstName: (firstName: State['firstName']) => void;
   addTask: (newTask: Task) => void;
   toggleTask: (name: string) => void;
   removeTask: (name: string) => void;
@@ -22,7 +20,6 @@ type Action = {
 
 // 4. Create the store
 export const useTaskStore = create<State & Action>((set) => ({
-  firstName: '',
   // Initial State
   tasks: [
     { name: 'Finish homework', completedStatus: true, project: 'Work' },
@@ -32,7 +29,6 @@ export const useTaskStore = create<State & Action>((set) => ({
   ],
 
   // Actions
-  updateFirstName: (firstName) => set(() => ({ firstName: firstName })),
   addTask: (newTask) => set((state) => ({ tasks: [...state.tasks, newTask] })),
   toggleTask: (name) =>
     set((state) => ({
