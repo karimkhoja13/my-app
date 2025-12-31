@@ -115,7 +115,8 @@ export default function App() {
       {page === 'tasks' && (<div>
         <AddTaskForm />
         <hr />
-        <TaskList />
+        <TaskList projectFilter={selectedProject}
+          goToProjects={goToProjectsList} />
         </div>
         // <TaskList
         //   allTasks={filteredTasks}

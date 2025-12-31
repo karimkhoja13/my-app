@@ -2,19 +2,22 @@ import { useState } from 'react';
 import { type Task, TaskItem } from '../components/TaskItem';
 import { AddTask } from '../components/AddTask';
 import { FilterGroup } from '../components/FilterGroup';
+import { useTaskStore } from '../App';
 
 export type FilterValues = 'all' | 'pending' | 'completed';
 
 interface TaskListProps {
-  allTasks: Task[];
+  projectFilter: string;
   onToggle: (name: string) => void;
   onAddTask: (name: string) => void;
   onDelete: (name: string) => void;
   goToProjects: () => void;
 }
 
-export function TaskList({ allTasks, onToggle, onAddTask, onDelete, goToProjects }: TaskListProps) {
+export function TaskList({ projectFilter, onToggle, onAddTask, onDelete, goToProjects }: TaskListProps) {
   const [selectedFilter, setSelectedFilter] = useState<FilterValues>('all');
+
+  const tasks = useTaskStore((state) => state.tasks);
 
   const handleToggle = (taskName: string) => {
     onToggle(taskName);
@@ -29,6 +32,10 @@ export function TaskList({ allTasks, onToggle, onAddTask, onDelete, goToProjects
     onDelete(taskName);
   };
 
+  const tasksFilteredByProject = tasks.filter(
+    (task) => task.project === projectFilter
+  );
+
   const handleFilter = (filterName: FilterValues) => {
     return (task: Task): boolean => {
       switch (filterName) {
@@ -42,7 +49,7 @@ export function TaskList({ allTasks, onToggle, onAddTask, onDelete, goToProjects
     };
   };
 
-  const filteredTasks = allTasks.filter(handleFilter(selectedFilter));
+  const tasksFilteredByStatus = tasksFilteredByProject.filter(handleFilter(selectedFilter));
 
   return (
     <div>
@@ -53,11 +60,13 @@ export function TaskList({ allTasks, onToggle, onAddTask, onDelete, goToProjects
         onFilter={setSelectedFilter}
       />
 
-      <AddTask onAdd={onAdd} />
+      {/* <AddTask onAdd={onAdd} /> */}
+
+      {/* <AddTaskForm /> */}
 
       {/* Task list */}
       <ul>
-        {filteredTasks.map((t) => (
+        {tasksFilteredByStatus.map((t) => (
           <TaskItem
             task={t}
             onToggle={() => handleToggle(t.name)}
