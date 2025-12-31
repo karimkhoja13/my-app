@@ -19,39 +19,31 @@ export default function App() {
     setPage('project');
   };
 
-  // "select" the needed state and actions, in this case, the firstName value
-  // and the action updateFirstName
-  const firstName = useTaskStore((state) => state.firstName);
-  const updateFirstName = useTaskStore((state) => state.updateFirstName);
-
   return (
-    <>
-      <main>
-        <label>
-          First name
-          <input
-            // Update the "firstName" state
-            onChange={(e) => updateFirstName(e.currentTarget.value)}
-            value={firstName}
-          />
-        </label>
-
-        <p>
-          Hello, <strong>{firstName}!</strong>
-        </p>
-      </main>
-      <p>{tasks.length}</p>
-      {page === 'project' && <Project allTasks={tasks} goToTasks={goToTasks} />}
-      {page === 'tasks' && (
-        <div>
-          <AddTask />
-          <hr />
-          <TaskList
-            projectFilter={selectedProject}
-            goToProjects={goToProjectsList}
-          />
-        </div>
-      )}
-    </>
+    // Centering Wrapper
+    <main style={{
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',    // Centers horizontally
+      minHeight: '80vh',      // Takes up full screen height
+      padding: '40px 200px',    // Adds some breathing room
+      fontFamily: 'sans-serif'
+    }}>
+      
+      {/* Content Container with a max-width so it doesn't get too wide on desktop */}
+      <div style={{ width: '100%', maxWidth: '500px' }}>
+        {page === 'project' && <Project allTasks={tasks} goToTasks={goToTasks} />}
+        {page === 'tasks' && (
+          <div>
+            <AddTask />
+            <hr />
+            <TaskList
+              projectFilter={selectedProject}
+              goToProjects={goToProjectsList}
+            />
+          </div>
+        )}
+      </div>
+    </main>
   );
 }

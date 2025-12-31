@@ -38,7 +38,7 @@ export function TaskList({ projectFilter, goToProjects }: TaskListProps) {
 
   return (
     <div>
-      <h1>Task List</h1>
+      <h2>Task List</h2>
 
       <FilterGroup
         selectedFilter={selectedFilter}

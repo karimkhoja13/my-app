@@ -40,10 +40,10 @@ export function Project({ allTasks, goToTasks }: ProjectProps) {
       {projectWithStats.map((project) => (
         <div onClick={() => handleClick(project.name)}>
           <h2>{project.name}</h2>
-          Stats:
-          <p>Total tasks = {project.stats.all}</p>
-          <p>Pending tasks = {project.stats.pending}</p>
-          <p>Completed tasks = {project.stats.completed}</p>
+          <p>Stats:
+          Total tasks = {project.stats.all} <br />
+          Pending tasks = {project.stats.pending}<br />
+          Completed tasks = {project.stats.completed}</p>
           <br />
         </div>
       ))}
