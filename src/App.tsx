@@ -1,9 +1,9 @@
 import { useState } from 'react';
-// import { TaskList } from './pages/TaskList';
 import { TaskList } from './pages/TaskList';
 import { Project } from './pages/Project';
 import { create } from 'zustand';
-import { AddTaskForm } from "./components/AddTask-Zustand"
+// import { AddTaskForm } from "./components/AddTask-Zustand"
+import { AddTask } from './components/AddTask';
 
 // 1. Define the shape of a single Task
 type Task = {
@@ -113,7 +113,7 @@ export default function App() {
       <p>{tasks.length}</p>
       {page === 'project' && <Project allTasks={tasks} goToTasks={goToTasks} />}
       {page === 'tasks' && (<div>
-        <AddTaskForm />
+        <AddTask />
         <hr />
         <TaskList projectFilter={selectedProject}
           goToProjects={goToProjectsList} />
