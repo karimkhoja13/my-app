@@ -35,8 +35,8 @@ export function AddTaskForm() {
       />
       
       <select value={project} onChange={(e) => setProject(e.target.value)}>
-        <option value="Work">Work</option>
         <option value="Personal">Personal</option>
+        <option value="Work">Work</option>
       </select>
 
       <button type="submit">Add Task</button>
