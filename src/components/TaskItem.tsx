@@ -1,3 +1,5 @@
+import { useTaskStore } from "../store";
+
 export interface Task {
   name: string;
   completedStatus: boolean;
@@ -6,15 +8,11 @@ export interface Task {
 
 interface TaskItemProps {
   task: Task;
-  onToggle: () => void;
-  onDelete: () => void;
 }
 
-export function TaskItem({
-  task,
-  onToggle,
-  onDelete,
-}: TaskItemProps) {
+export function TaskItem({ task }: TaskItemProps) {
+  const toggleTask = useTaskStore((state) => state.toggleTask);
+  const removeTask = useTaskStore((state) => state.removeTask);
   return (
     <li
       style={{ color: task.completedStatus ? 'black' : 'red' }}
@@ -24,12 +22,12 @@ export function TaskItem({
         <input
           type='checkbox'
           checked={task.completedStatus}
-          onChange={onToggle}
+          onChange={() => toggleTask(task.name)}
         />{' '}
         {task.name} {task.completedStatus ? '(Completed)' : '(Pending)'} -{' '}
         {task.project}
       </label>{' '}
-      <button onClick={onDelete}>🗑️</button>
+      <button onClick={() => removeTask(task.name)}>🗑️</button>
     </li>
   );
 }

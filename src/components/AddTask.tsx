@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useTaskStore } from "../App";
+import { useTaskStore } from '../store';
 
 export function AddTask() {
   const [newTaskName, setNewTaskName] = useState('');
