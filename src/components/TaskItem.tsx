@@ -1,4 +1,4 @@
-import { useTaskStore } from "../store";
+import { useActions } from "../store";
 
 export interface Task {
   name: string;
@@ -11,8 +11,7 @@ interface TaskItemProps {
 }
 
 export function TaskItem({ task }: TaskItemProps) {
-  const toggleTask = useTaskStore((state) => state.toggleTask);
-  const removeTask = useTaskStore((state) => state.removeTask);
+  const { toggleTask, removeTask } = useActions();
   return (
     <li
       style={{ color: task.completedStatus ? 'black' : 'red' }}
