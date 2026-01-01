@@ -1,5 +1,5 @@
 import { AddProject } from '../components/AddProject';
-import { useActions, useAllTasks } from '../store';
+import { useActions, useAllTasks, useAllProjects } from '../store';
 
 interface Project {
   name: string;
@@ -10,10 +10,10 @@ interface ProjectProps {
 }
 
 export function Project({ goToTasks }: ProjectProps) {
-  const projects = ['Personal', 'Work'];
 
-  const { updateSelectedProject } = useActions();
+  const { updateSelectedProject, removeProject } = useActions();
   const allTasks = useAllTasks();
+  const projects = useAllProjects();
 
   const handleClick = (projectName: string) => {
     updateSelectedProject(projectName);
@@ -43,11 +43,13 @@ export function Project({ goToTasks }: ProjectProps) {
     <div>
       <AddProject />
       {projectWithStats.map((project) => (
-        <div onClick={() => handleClick(project.name)}>
-          <h2>{project.name}</h2>
+        <div>
+          <h3>{project.name}</h3>
+          <button onClick={() => handleClick(project.name)}>Go to {project.name} Tasks</button><br />
+          <button onClick={() => removeProject(project.name)}>Delete Project</button>
           <p>
             Stats: Total tasks = {project.stats.all} <br />
-            Pending tasks = {project.stats.pending}
+            Pending tasks = {project.stats.pending} 
             <br />
             Completed tasks = {project.stats.completed}
           </p>

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { type Task, TaskItem } from '../components/TaskItem';
 import { FilterGroup } from '../components/FilterGroup';
-import { useTasks } from '../store';
+import { useSelectedProject, useTasks } from '../store';
 
 export type FilterValues = 'all' | 'pending' | 'completed';
 
@@ -13,6 +13,7 @@ export function TaskList({ goToProjects }: TaskListProps) {
   const [selectedFilter, setSelectedFilter] = useState<FilterValues>('all');
 
   const tasks = useTasks();
+  const project = useSelectedProject();
 
   const tasksFilteredByStatus = tasks.filter((task: Task): boolean => {
       switch (selectedFilter) {
@@ -27,7 +28,7 @@ export function TaskList({ goToProjects }: TaskListProps) {
 
   return (
     <div>
-      <h2>Task List</h2>
+      <h2>{project} Tasks</h2>
 
       <FilterGroup
         selectedFilter={selectedFilter}

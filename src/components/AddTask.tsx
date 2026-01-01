@@ -1,19 +1,15 @@
 import { useState } from 'react';
-import { useActions } from '../store';
+import { useActions, useSelectedProject } from '../store';
 
 export function AddTask() {
   const [newTaskName, setNewTaskName] = useState('');
-  const [project, setProject] = useState('Personal');
 
   const { addTask } = useActions();
+  const project = useSelectedProject();
 
   const handleClick = () => {
-    if (!newTaskName.trim()) return; // Don't add empty tasks
-
-    // 3. Call the Zustand action
+    if (!newTaskName.trim()) return;
     addTask(newTaskName);
-
-    // 4. Clear the input after adding
     setNewTaskName('');
   };
 
@@ -28,11 +24,7 @@ export function AddTask() {
         value={newTaskName}
         onChange={(e) => setNewTaskName(e.target.value)}
       />
-      <select value={project} onChange={(e) => setProject(e.target.value)}>
-        <option value='Personal'>Personal</option>
-        <option value='Work'>Work</option>
-      </select>
-      <button onClick={handleClick}>Add Task</button>
+      <button onClick={handleClick}>Add Task to {project}</button>
     </div>
   );
 }

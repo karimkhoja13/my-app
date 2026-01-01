@@ -21,10 +21,12 @@ type Actions = {
   toggleTask: (name: string) => void;
   removeTask: (name: string) => void;
   updateSelectedProject: (selectedProject: State['selectedProject']) => void;
+  addProject: (name: string) => void;
+  removeProject: (name: string) => void;
 };
 
 // 4. Create the store
-const useTaskStore = create<State>((set, get) => ({
+const useTaskStore = create<State>((set) => ({
   // Initial State
   tasks: [
     { name: 'Finish homework', completedStatus: true, project: 'Work' },
@@ -62,6 +64,15 @@ const useTaskStore = create<State>((set, get) => ({
       })),
     updateSelectedProject: (selectedProject) =>
       set(() => ({ selectedProject: selectedProject })),
+    addProject: (name: string) =>
+      set((state) => ({
+        projects: [...state.projects, name],
+      })),
+    removeProject: (name) =>
+      set((state) => ({
+        projects: state.projects.filter((project) => project !== name),
+        tasks: state.tasks.filter((task) => task.project !== name),
+      })),
   },
 }));
 
@@ -75,6 +86,14 @@ export const useTasks = () => {
 
 export const useAllTasks = () => {
   return useTaskStore((state) => state.tasks);
+};
+
+export const useAllProjects = () => {
+  return useTaskStore((state) => state.projects);
+};
+
+export const useSelectedProject = () => {
+  return useTaskStore((state) => state.selectedProject);
 };
 
 export const useActions = () => {
