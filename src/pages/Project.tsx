@@ -1,19 +1,23 @@
-import type { Task } from '../components/TaskItem';
+import { AddProject } from '../components/AddProject';
+import { useActions, useAllTasks } from '../store';
 
 interface Project {
   name: string;
 }
 
 interface ProjectProps {
-  allTasks: Task[];
-  goToTasks: (projectName: string) => void;
+  goToTasks: () => void;
 }
 
-export function Project({ allTasks, goToTasks }: ProjectProps) {
+export function Project({ goToTasks }: ProjectProps) {
   const projects = ['Personal', 'Work'];
 
+  const { updateSelectedProject } = useActions();
+  const allTasks = useAllTasks();
+
   const handleClick = (projectName: string) => {
-    goToTasks(projectName);
+    updateSelectedProject(projectName);
+    goToTasks();
   };
 
   const projectWithStats = projects.map((project) => {
@@ -37,13 +41,16 @@ export function Project({ allTasks, goToTasks }: ProjectProps) {
 
   return (
     <div>
+      <AddProject />
       {projectWithStats.map((project) => (
         <div onClick={() => handleClick(project.name)}>
           <h2>{project.name}</h2>
-          <p>Stats:
-          Total tasks = {project.stats.all} <br />
-          Pending tasks = {project.stats.pending}<br />
-          Completed tasks = {project.stats.completed}</p>
+          <p>
+            Stats: Total tasks = {project.stats.all} <br />
+            Pending tasks = {project.stats.pending}
+            <br />
+            Completed tasks = {project.stats.completed}
+          </p>
           <br />
         </div>
       ))}

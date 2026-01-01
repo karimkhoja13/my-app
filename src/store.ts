@@ -1,25 +1,30 @@
 import { create } from 'zustand';
+import { useShallow } from 'zustand/shallow';
 
 // 1. Define the shape of a single Task
-type Task = {
+interface Task {
   name: string;
   completedStatus: boolean;
   project: string;
-};
+}
 
 type State = {
   tasks: Task[];
+  projects: string[];
+  selectedProject: string;
+  actions: Actions;
 };
 
 // 3. Define the Actions (functions)
-type Action = {
-  addTask: (newTask: Task) => void;
+type Actions = {
+  addTask: (name: string) => void;
   toggleTask: (name: string) => void;
   removeTask: (name: string) => void;
+  updateSelectedProject: (selectedProject: State['selectedProject']) => void;
 };
 
 // 4. Create the store
-export const useTaskStore = create<State & Action>((set) => ({
+const useTaskStore = create<State>((set, get) => ({
   // Initial State
   tasks: [
     { name: 'Finish homework', completedStatus: true, project: 'Work' },
@@ -27,19 +32,51 @@ export const useTaskStore = create<State & Action>((set) => ({
     { name: 'Grocery shopping', completedStatus: true, project: 'Work' },
     { name: 'Study React', completedStatus: false, project: 'Work' },
   ],
-
-  // Actions
-  addTask: (newTask) => set((state) => ({ tasks: [...state.tasks, newTask] })),
-  toggleTask: (name) =>
-    set((state) => ({
-      tasks: state.tasks.map((task) =>
-        task.name === name
-          ? { ...task, completedStatus: !task.completedStatus }
-          : task
-      ),
-    })),
-  removeTask: (name) =>
-    set((state) => ({
-      tasks: state.tasks.filter((task) => task.name !== name),
-    })),
+  projects: ['Personal', 'Work'],
+  selectedProject: '',
+  actions: {
+    // Actions
+    addTask: (name) => {
+      set((state) => ({
+        tasks: [
+          ...state.tasks,
+          {
+            name: name,
+            completedStatus: false,
+            project: state.selectedProject,
+          },
+        ],
+      }));
+    },
+    toggleTask: (name: string) =>
+      set((state) => ({
+        tasks: state.tasks.map((task) =>
+          task.name === name
+            ? { ...task, completedStatus: !task.completedStatus }
+            : task
+        ),
+      })),
+    removeTask: (name) =>
+      set((state) => ({
+        tasks: state.tasks.filter((task) => task.name !== name),
+      })),
+    updateSelectedProject: (selectedProject) =>
+      set(() => ({ selectedProject: selectedProject })),
+  },
 }));
+
+export const useTasks = () => {
+  return useTaskStore(
+    useShallow((state) =>
+      state.tasks.filter((t) => t.project === state.selectedProject)
+    )
+  );
+};
+
+export const useAllTasks = () => {
+  return useTaskStore((state) => state.tasks);
+};
+
+export const useActions = () => {
+  return useTaskStore((state) => state.actions);
+};
